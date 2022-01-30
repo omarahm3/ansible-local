@@ -1,0 +1,3 @@
+[submodule "private"]
+	path = private
+	url = git@github.com:omarahm3/private-ansible-files.git
