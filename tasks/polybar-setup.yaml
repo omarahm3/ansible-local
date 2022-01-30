@@ -1,0 +1,88 @@
+- name: Check if polybar exists
+  shell: command -v polybar >/dev/null 2>&1
+  register: polybar_exists
+  ignore_errors: true
+  failed_when: polybar_exists.rc not in [ 0, 1, 127 ]
+
+- name: Install build dependencies
+  become: true
+  apt:
+    name:
+      - cmake-data
+      - python3-sphinx
+      - python3-packaging
+      - libuv1-dev
+      - libcairo2-dev
+      - libxcb1-dev
+      - libxcb-util0-dev
+      - libxcb-randr0-dev
+      - libxcb-composite0-dev
+      - python3-xcbgen
+      - xcb-proto
+      - libxcb-image0-dev
+      - libxcb-ewmh-dev
+      - libxcb-icccm4-dev
+      - libxcb-xkb-dev
+      - libxcb-xrm-dev
+      - libxcb-cursor-dev
+      - libasound2-dev
+      - libpulse-dev
+      - libjsoncpp-dev
+      - libmpdclient-dev
+      - libcurl4-openssl-dev
+      - libnl-genl-3-dev
+    update_cache: true
+  when: polybar_exists.rc != 0
+  tags:
+    - install
+    - polybar
+
+- name: Clone polybar
+  git:
+    repo: "https://github.com/polybar/polybar"
+    clone: true
+    recursive: true
+    dest: "/tmp/polybar"
+  when: polybar_exists.rc != 0
+  tags:
+    - install
+    - polybar
+
+- name: ensure that we have a build directory
+  file:
+    path: "/tmp/polybar/build"
+    state: directory
+  register: buildDirectory
+  when: polybar_exists.rc != 0
+  tags:
+    - install
+    - polybar
+
+- name: Build and install polybar
+  become: true
+  shell:
+    chdir: /tmp/polybar/build
+    cmd: cmake .. && make -j$(nproc) && make install
+  when: polybar_exists.rc != 0
+  tags:
+    - install
+    - polybar
+
+- name: Clean up build
+  become: true
+  file:
+    state: absent
+    path: /tmp/polybar
+  when: polybar_exists.rc != 0
+  tags:
+    - install
+    - polybar
+
+- name: Clean up apt
+  become: true
+  apt:
+    autoremove: true
+    update_cache: true
+  tags:
+    - install
+    - polybar

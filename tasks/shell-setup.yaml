@@ -1,0 +1,106 @@
+- name: Install fish and fish plugins
+  become: true
+  apt:
+    name: [ "fish" ]
+  tags:
+    - install
+    - shell
+    - fish
+
+- name: Install starship
+  shell: ". {{ lookup('env', 'HOME') }}/.cargo/env && cargo install starship"
+  args:
+    warn: false
+  tags:
+    - install
+    - starship
+    - shell
+    - fish
+
+- name: Check if omf exists
+  stat:
+    path: ~/.local/share/omf
+  register: omf
+
+
+- name: Install OMF
+  become_user: "{{ USER }}"
+  shell: "curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install > install && fish install --noninteractive && rm install"
+  when: omf.stat.exists == False
+  tags:
+    - install
+    - fish
+    - shell
+    - omf
+
+- name: Check if fish functions directory exists
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/.config/fish/functions"
+  register: fishfunctions
+
+- name: Create fish functions directory
+  become: true
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.config/fish/functions"
+    state: directory
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+    mode: 0755
+    recurse: true
+  when: fishfunctions.stat.exists == False
+  tags:
+    - install
+    - fish
+    - shell
+
+- name: Install fisher
+  become_user: "{{ USER }}"
+  get_url:
+    url: "https://git.io/fisher"
+    dest: "{{ lookup('env', 'HOME') }}/.config/fish/functions/fisher.fish"
+  tags:
+    - install
+    - fish
+    - shell
+    - fisher
+
+- name: Install OMF plugins
+  become_user: "{{ USER }}"
+  shell: "fish -c 'omf install bass'"
+  tags:
+    - install
+    - fish
+    - shell
+    - omf-plugins
+    - bass
+
+- name: Check if fish ssh agent exists
+  stat:
+    path: "/home/{{ USER }}/.config/fish/functions/__ssh_agent_is_started.fish"
+  register: ssh_agent_exists
+  tags:
+    - install
+    - fish
+    - shell
+    - fisher-plugins
+
+- name: Install fisher plugins
+  become_user: "{{ USER }}"
+  shell: "fish -c 'fisher install danhper/fish-ssh-agent'"
+  when: ssh_agent_exists.stat.exists == False
+  tags:
+    - install
+    - fish
+    - shell
+    - fisher-plugins
+
+- name: Set fish as default shell
+  become: true
+  user:
+    name: "{{ USER }}"
+    shell: /usr/bin/fish
+  tags:
+    - install
+    - starship
+    - shell
+    - fish

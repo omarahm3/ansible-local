@@ -1,0 +1,47 @@
+- name: Create tmp fonts directory
+  become: true
+  file:
+    path: "/tmp/fonts-build"
+    state: directory
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+    mode: 0755
+    recurse: true
+  tags:
+    - install
+    - fonts
+
+- include: font-install.yaml
+  with_items:
+    - Iosevka
+    - JetBrainsMono
+    - UbuntuMono
+    - CascadiaCode
+    - FiraCode
+    - FiraMono
+    - Hack
+    - Noto
+    - Agave
+  loop_control:
+    loop_var: font
+
+- name: Install material icons fonts
+  get_url:
+    url: "https://github.com/google/material-design-icons/blob/master/font/{{ item }}-Regular.ttf?raw=true"
+    dest: "/home/{{ USER }}/.local/share/fonts/{{ item }}-Regular.ttf"
+  with_items:
+    - MaterialIcons
+    - MaterialIconsOutlined
+    - MaterialIconsRound
+    - MaterialIconsSharp
+    - MaterialIconsTwoTone
+  tags:
+    - install
+    - fonts
+
+- name: Update fonts cache
+  shell:
+    cmd: fc-cache -fv
+  tags:
+    - install
+    - fonts

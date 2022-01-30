@@ -1,0 +1,24 @@
+- name: Install snap packages
+  become: true
+  snap:
+    name:
+      - authy
+      - telegram-desktop
+      - jq
+      - figma-linux
+      - robo3t-snap
+      - beekeeper-studio
+  tags:
+    - install
+    - snap
+
+- name: Install classic snap packages
+  become: true
+  snap:
+    name:
+      - code
+      - phpstorm
+    classic: true
+  tags:
+    - install
+    - snap

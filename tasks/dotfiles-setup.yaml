@@ -1,0 +1,39 @@
+- name: ensure that ~/.dotfiles exists
+  stat:
+    path: "~/.dotfiles"
+  register: dotfiles
+  tags:
+    - install
+    - dotfiles
+
+- name: Clone dotfiles
+  git:
+    repo: "git@github.com:omarahm3/.dotfiles.git"
+    dest: "~/.dotfiles"
+    clone: true
+    recursive: true
+    track_submodules: true
+    accept_hostkey: yes
+    key_file: "{{ DEST_KEY }}"
+  tags:
+    - install
+    - dotfiles
+  when: dotfiles.stat.exists == False
+
+- name: Clean up ssh before stow
+  file:
+    state: absent
+    path: "/home/{{ USER }}/.ssh"
+
+- name: Run stow
+  shell:
+    cmd: stow -vSt ~ *
+    chdir: ~/.dotfiles
+
+- name: Handle ssh keys
+  file:
+    path: "{{ item }}"
+    state: file
+    mode: 0600
+  with_fileglob:
+    - "{{ lookup('env', 'HOME') }}/.ssh/*"

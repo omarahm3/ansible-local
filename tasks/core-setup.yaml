@@ -1,0 +1,66 @@
+- name: Install System Packages 1
+  become: true
+  apt:
+    name:
+      - build-essential
+      - cmake
+      - pkg-config
+      - libpthread-stubs0-dev
+      - unzip
+      - libtool
+      - libtool-bin
+      - gettext
+      - stow
+      - openssl
+      - libssl-dev
+      - software-properties-common
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - wget
+      - iputils-ping
+      - virtualenv
+      - git
+    update_cache: true
+  tags:
+    - install
+    - core
+
+- name: Get openvpn3 key and install it
+  shell: cd /tmp && wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub && apt-key add openvpn-repo-pkg-key.pub
+  become: true
+
+- name: Add openvpn3 repository
+  shell: "wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-{{ RELEASE_NAME }}.list"
+  become: true
+
+- name: Install System Packages 2
+  become: true
+  apt:
+    name:
+      - openvpn3
+      - ripgrep
+      - fzf
+      - regolith-compositor-picom-glx
+      - tmux
+    update_cache: true
+  tags:
+    - install
+    - core
+
+- name: Install System Packages 3 (the rest)
+  become: true
+  apt:
+    name:
+      - htop
+      - lsof
+      - ccache
+      - dconf-editor
+      - nvidia-settings
+      - pavucontrol
+      - moreutils
+      - gnome-tweaks
+      - chromium-browser
+  tags:
+    - install
+    - core

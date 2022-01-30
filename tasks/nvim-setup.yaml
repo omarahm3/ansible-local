@@ -1,0 +1,17 @@
+- name: Add neovim repository
+  become: true
+  apt_repository:
+    repo: ppa:neovim-ppa/stable
+    update_cache: true
+  tags:
+    - install
+    - neovim
+
+- name: Install neovim
+  become: true
+  apt:
+    name: ['neovim']
+    update_cache: true
+  tags:
+    - install
+    - neovim

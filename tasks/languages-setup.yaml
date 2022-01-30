@@ -1,0 +1,58 @@
+- name: Install languages
+  become: true
+  apt:
+    name:
+      - lua5.1
+      - golang
+      - python3-dev
+      - python3-pip
+      - python3-setuptools
+  tags:
+    - install
+    - languages
+
+- name: Add PHP repo
+  become: true
+  apt_repository:
+    repo: ppa:ondrej/php
+    update_cache: true
+  tags:
+    - install
+    - languages
+    - php
+
+- name: Install PHP and its modules
+  become: true
+  apt:
+    name:
+      - 'php{{ DEFAULT_PHP_VERSION }}'
+      - 'php{{ DEFAULT_PHP_VERSION }}-mysql'
+      - 'php{{ DEFAULT_PHP_VERSION }}-curl'
+      - 'php{{ DEFAULT_PHP_VERSION }}-cli'
+      - 'php{{ DEFAULT_PHP_VERSION }}-bcmath'
+      - 'php{{ DEFAULT_PHP_VERSION }}-json'
+      - 'php{{ DEFAULT_PHP_VERSION }}-mbstring'
+      - 'php{{ DEFAULT_PHP_VERSION }}-gd'
+      - 'php{{ DEFAULT_PHP_VERSION }}-fpm'
+      - 'php{{ DEFAULT_PHP_VERSION }}-dom'
+      - 'php{{ DEFAULT_PHP_VERSION }}-mongodb'
+      - php8.0
+  tags:
+    - install
+    - languages
+    - php
+
+- name: Install rust
+  shell:
+    cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y
+  tags:
+    - install
+    - languages
+    - rust
+
+- name: Configure nightly rust
+  shell: ". {{ lookup('env', 'HOME') }}/.cargo/env && rustup default nightly && rustup update"
+  tags:
+    - install
+    - languages
+    - rust

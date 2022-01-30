@@ -1,0 +1,50 @@
+- hosts: local
+  vars:
+    SOURCE_KEY: "./private/.ssh/very_very_very_top_secret_key"
+    DEST_KEY: "{{ lookup('env', 'HOME') }}/.ssh/very_very_very_top_secret_key"
+    NODE_VERSION: "14"
+    USER: "{{ lookup('env', 'USER') or 'custom_user' }}"
+    RELEASE_NAME: "focal"
+    NERD_FONTS_VERSION: "v2.1.0"
+    DEFAULT_PHP_VERSION: "7.4"
+    GIT_NAME: "John Doe"
+    GIT_EMAIL: "john@example.com"
+  pre_tasks:
+    - name: Update Apt
+      become: true
+      apt:
+        autoclean: true
+        autoremove: true
+        force_apt_get: true
+        update_cache: true
+        state: latest
+      tags:
+        - install
+        - core
+    - name: Printing all passed variables
+      debug:
+        msg: |
+          Source key: {{ SOURCE_KEY }}
+          Destination key: {{ DEST_KEY }}
+          Release name: {{ RELEASE_NAME }}
+          USER: {{ USER }}
+          GIT Name: {{ GIT_NAME }}
+          GIT Email: {{ GIT_EMAIL }}
+          NodeJs version: {{ NODE_VERSION }}
+          NerdFonts version: {{ NERD_FONTS_VERSION }}
+          PHP version: {{ DEFAULT_PHP_VERSION }}
+      
+  tasks:
+    - include_tasks: tasks/ssh-setup.yaml
+    - include_tasks: tasks/core-setup.yaml
+    - include_tasks: tasks/languages-setup.yaml
+    - include_tasks: tasks/polybar-setup.yaml
+    - include_tasks: tasks/rofi-setup.yaml
+    - include_tasks: tasks/nvim-setup.yaml
+    - include_tasks: tasks/shell-setup.yaml
+    - include_tasks: tasks/node-setup.yaml
+    - include_tasks: tasks/docker-setup.yaml
+    - include_tasks: tasks/dotfiles-setup.yaml
+    - include_tasks: private/setup.yaml
+    - include_tasks: tasks/snap-setup.yaml
+    - include_tasks: tasks/fonts-setup.yaml

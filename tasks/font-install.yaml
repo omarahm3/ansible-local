@@ -1,0 +1,42 @@
+- name: Check if font {{ font }} exists
+  shell:
+    cmd: fc-list | grep -iq "{{ font }}"
+    warn: false
+  ignore_errors: true
+  register: font_exists
+  failed_when: font_exists.rc not in [ 0, 1 ] # This to prevent showing errors in case rc is 1
+  tags:
+    - install
+    - fonts
+
+- name: Create {{ font }} directory
+  file:
+    path: "/tmp/fonts-build/{{ font }}"
+    state: directory
+  when: font_exists.rc == 1
+  tags:
+    - install
+    - fonts
+
+- name: Download font {{ font }} and unarchive
+  become_user: "{{ USER }}"
+  unarchive:
+    src: "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ NERD_FONTS_VERSION }}/{{ font }}.zip"
+    dest: "/tmp/fonts-build/{{ font }}"
+    remote_src: true
+  when: font_exists.rc == 1
+  tags:
+    - install
+    - fonts
+
+- name: Copy font {{ font }} to fonts directory
+  become_user: "{{ USER }}"
+  synchronize:
+    src: "/tmp/fonts-build/{{ font }}/"
+    dest: "/home/{{ USER }}/.local/share/fonts/"
+    rsync_opts:
+      - "--exclude=*Windows*"
+  when: font_exists.rc == 1
+  tags:
+    - install
+    - fonts
