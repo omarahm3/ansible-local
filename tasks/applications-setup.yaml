@@ -74,3 +74,23 @@
     - package
     - applications
     - k8s-lens
+
+- name: Download insomnia debian package
+  get_url:
+      url: 'https://updates.insomnia.rest/downloads/ubuntu/latest?&app=com.insomnia.app&source=website'
+      dest: '/tmp/insomnia.deb'
+  tags:
+    - download
+    - package
+    - applications
+    - insomnia
+
+- name: Install insomnia
+  sudo: true
+  apt:
+      deb: '/tmp/insomnia.deb'
+  tags:
+    - install
+    - package
+    - applications
+    - insomnia
