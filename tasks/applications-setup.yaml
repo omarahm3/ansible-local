@@ -1,0 +1,76 @@
+- name: Install baapan
+  shell: npm i -g baapan
+  become: true
+  become_user: "{{ USER }}"
+  tags:
+    - install
+    - applications
+    - npm
+    - baapan
+
+- name: Install bitwarden cli
+  shell: npm install -g @bitwarden/cli
+  become: true
+  become_user: "{{ USER }}"
+  tags:
+    - install
+    - applications
+    - npm
+    - bitwarden-cli
+
+- name: Add github-desktop repository
+  become: true
+  apt_repository:
+    repo: "deb [arch=amd64] https://mirror.mwt.me/ghd/deb/ any main"
+    update_cache: true
+    state: present
+  tags:
+    - install
+    - repository
+    - applications
+    - github-desktop
+
+- name: Add notion-enhancer repository
+  become: true
+  apt_repository:
+    repo: "deb [trusted=yes] https://apt.fury.io/notion-repackaged/ /"
+    update_cache: true
+    state: present
+  tags:
+    - install
+    - repository
+    - applications
+    - notion-enhanced
+
+- name: Install applications
+  become: true
+  apt:
+    name:
+      - github-desktop
+      - notion-app-enhanced
+    update_cache: true
+  tags:
+    - install
+    - applications
+    - github-desktop
+    - notion-enhanced
+
+- name: Download k8s lens debian package
+  get_url:
+      url: 'https://api.k8slens.dev/binaries/Lens-5.4.6-latest.20220421.1.amd64.deb'
+      dest: '/tmp/lens.deb'
+  tags:
+    - download
+    - package
+    - applications
+    - k8s-lens
+
+- name: Install k8s lens
+  sudo: true
+  apt:
+      deb: '/tmp/lens.deb'
+  tags:
+    - install
+    - package
+    - applications
+    - k8s-lens

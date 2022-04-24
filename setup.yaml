@@ -46,5 +46,6 @@
     - include_tasks: tasks/docker-setup.yaml
     - include_tasks: tasks/dotfiles-setup.yaml
     - include_tasks: private/setup.yaml
+    - include_tasks: tasks/applications-setup.yaml
     - include_tasks: tasks/snap-setup.yaml
     - include_tasks: tasks/fonts-setup.yaml

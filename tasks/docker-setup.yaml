@@ -4,7 +4,7 @@
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
   tags:
-    - Install
+    - install
     - docker
 
 - name: Add docker repository
@@ -14,7 +14,7 @@
     update_cache: true
     state: present
   tags:
-    - Install
+    - install
     - docker
 
 - name: Install docker-ce
@@ -24,7 +24,7 @@
     name: docker-ce
     state: latest
   tags:
-    - Install
+    - install
     - docker
 
 - name: Add user to docker group
@@ -35,7 +35,7 @@
     groups: docker
     append: true
   tags:
-    - Install
+    - install
     - docker
 
 - name: Install docker-compose
@@ -44,5 +44,5 @@
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
   tags:
-    - Install
+    - install
     - docker
