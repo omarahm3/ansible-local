@@ -64,3 +64,11 @@
   tags:
     - install
     - core
+
+- name: Install kitty
+  shell:
+    cmd: curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+  tags:
+    - install
+    - core
+    - kitty
