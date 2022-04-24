@@ -18,6 +18,18 @@
     - npm
     - bitwarden-cli
 
+- name: Download github-desktop GPG certificate
+  become: true
+  get_url:
+      url: 'https://mirror.mwt.me/ghd/gpgkey'
+      dest: '/etc/apt/trusted.gpg.d/shiftkey-desktop.asc'
+  tags:
+    - download
+    - package
+    - applications
+    - github-desktop
+    - certificate
+
 - name: Add github-desktop repository
   become: true
   apt_repository:
