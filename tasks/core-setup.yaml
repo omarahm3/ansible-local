@@ -1,3 +1,12 @@
+- name: Add multiverse repository
+  become: true
+  apt_repository:
+    repo: multiverse
+    update_cache: true
+  tags:
+    - install
+    - core
+
 - name: Install System Packages 1
   become: true
   apt:
@@ -21,6 +30,7 @@
       - iputils-ping
       - virtualenv
       - git
+      - steam
     update_cache: true
   tags:
     - install
