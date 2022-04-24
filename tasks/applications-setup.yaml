@@ -78,7 +78,7 @@
     - k8s-lens
 
 - name: Install k8s lens
-  sudo: true
+  become: true
   apt:
       deb: '/tmp/lens.deb'
   tags:
@@ -98,7 +98,7 @@
     - insomnia
 
 - name: Install insomnia
-  sudo: true
+  become: true
   apt:
       deb: '/tmp/insomnia.deb'
   tags:
