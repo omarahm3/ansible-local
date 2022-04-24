@@ -1,7 +1,7 @@
 - hosts: local
   vars:
-    SOURCE_KEY: "./private/.ssh/very_very_very_top_secret_key"
-    DEST_KEY: "{{ lookup('env', 'HOME') }}/.ssh/very_very_very_top_secret_key"
+    SOURCE_KEY: "./private/.ssh/ansible"
+    DEST_KEY: "{{ lookup('env', 'HOME') }}/.ssh/ansible"
     NODE_VERSION: "14"
     USER: "{{ lookup('env', 'USER') or 'custom_user' }}"
     RELEASE_NAME: "focal"
