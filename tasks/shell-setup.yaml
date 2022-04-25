@@ -1,3 +1,13 @@
+- name: Add fish 3 repository
+  become: true
+  apt_repository:
+    repo: ppa:fish-shell/release-3
+    update_cache: true
+  tags:
+    - install
+    - shell
+    - fish
+
 - name: Install fish and fish plugins
   become: true
   apt:
