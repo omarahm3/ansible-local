@@ -10,17 +10,10 @@
     - tmux
 
 - name: Download source
-  get_url:
-      url: 'https://github.com/tmux/tmux/releases/download/{{ DEFAULT_TMUX_VERSION }}/tmux-{{ DEFAULT_TMUX_VERSION }}.tar.gz'
-      dest: '/tmp/tmux.tar.gz'
-  tags:
-    - install
-    - tmux
-
-- name: Unarchive tmux source
   unarchive:
-      url: '/tmp/tmux.tar.gz'
+      url: 'https://github.com/tmux/tmux/releases/download/{{ DEFAULT_TMUX_VERSION }}/tmux-{{ DEFAULT_TMUX_VERSION }}.tar.gz'
       dest: '/tmp/tmux'
+      remote_src: true
   tags:
     - install
     - tmux
