@@ -8,6 +8,7 @@
       - figma-linux
       - robo3t-snap
       - beekeeper-studio
+      - flameshot
   tags:
     - install
     - snap
