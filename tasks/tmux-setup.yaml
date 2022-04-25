@@ -1,0 +1,47 @@
+- name: Install dependencies
+  become: true
+  apt:
+    name:
+      - tar
+      - libevent-dev
+      - libncurses-dev
+  tags:
+    - install
+    - tmux
+
+- name: Download source
+  get_url:
+      url: 'https://github.com/tmux/tmux/releases/download/{{ DEFAULT_TMUX_VERSION }}/tmux-{{ DEFAULT_TMUX_VERSION }}.tar.gz'
+      dest: '/tmp/tmux.tar.gz'
+  tags:
+    - install
+    - tmux
+
+- name: Unarchive tmux source
+  unarchive:
+      url: '/tmp/tmux.tar.gz'
+      dest: '/tmp/tmux'
+  tags:
+    - install
+    - tmux
+
+- name: Prepare tmux build
+  shell:
+      cmd: 'cd /tmp/tmux/ && ./configure && make'
+  tags:
+    - install
+    - tmux
+
+- name: Install build
+  become: true
+  make:
+      chdir: /tmp/tmux/
+      target: install
+  tags:
+    - install
+    - tmux
+
+- name: Move files
+  become: true
+  shell:
+    cmd: 'rm -rf /usr/local/src/tmux-\* && mv /tmp/tmux /usr/local/src'

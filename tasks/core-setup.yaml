@@ -43,7 +43,6 @@
       - ripgrep
       - fzf
       - regolith-compositor-picom-glx
-      - tmux
     update_cache: true
   tags:
     - install

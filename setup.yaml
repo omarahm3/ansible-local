@@ -7,6 +7,7 @@
     RELEASE_NAME: "focal"
     NERD_FONTS_VERSION: "v2.1.0"
     DEFAULT_PHP_VERSION: "7.4"
+    DEFAULT_TMUX_VERSION: "3.3-rc"
     GIT_NAME: "John Doe"
     GIT_EMAIL: "john@example.com"
   pre_tasks:
@@ -40,6 +41,7 @@
     - include_tasks: tasks/languages-setup.yaml
     - include_tasks: tasks/polybar-setup.yaml
     - include_tasks: tasks/rofi-setup.yaml
+    - include_tasks: tasks/tmux-setup.yaml
     - include_tasks: tasks/nvim-setup.yaml
     - include_tasks: tasks/shell-setup.yaml
     - include_tasks: tasks/node-setup.yaml
