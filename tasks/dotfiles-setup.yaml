@@ -20,11 +20,6 @@
     - dotfiles
   when: dotfiles.stat.exists == False
 
-- name: Clean up ssh before stow
-  file:
-    state: absent
-    path: "/home/{{ USER }}/.ssh"
-
 - name: Run stow
   shell:
     cmd: stow -vSt ~ *
