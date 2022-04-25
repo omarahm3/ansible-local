@@ -40,6 +40,7 @@
     - include_tasks: tasks/core-setup.yaml
     - include_tasks: tasks/languages-setup.yaml
     - include_tasks: tasks/polybar-setup.yaml
+    - include_tasks: tasks/dunst-setup.yaml
     - include_tasks: tasks/rofi-setup.yaml
     - include_tasks: tasks/tmux-setup.yaml
     - include_tasks: tasks/nvim-setup.yaml

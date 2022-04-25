@@ -1,0 +1,85 @@
+- name: Check if dunst exists
+  shell: command -v dunst >/dev/null 2>&1
+  register: dunst_exists
+  ignore_errors: true
+  failed_when: dunst_exists.rc not in [ 0, 1, 127 ]
+
+- name: Install build dependencies
+  become: true
+  apt:
+    name:
+      - cmake-data
+      - libxinerama-dev
+      - libxrandr-dev
+      - libxss-dev
+      - libglib2.0-dev
+      - libpangocairo-1.0-0
+      - libnotify-dev
+      - xdg-utils
+      - wayland-protocols
+    update_cache: true
+  when: dunst_exists.rc != 0
+  tags:
+    - install
+    - dunst
+
+- name: Clone dunst
+  git:
+    repo: 'https://github.com/k-vernooy/dunst.git'
+    clone: true
+    recursive: true
+    dest: '/tmp/dunst'
+  when: dunst_exists.rc != 0
+  tags:
+    - install
+    - dunst
+
+- name: Checkout to styling branch
+  shell:
+    chdir: /tmp/dunst
+    cmd: 'git checkout progress-styling'
+  when: dunst_exists.rc != 0
+  tags:
+    - install
+    - dunst
+
+- name: Build dunst
+  make:
+    chdir: /tmp/dunst
+    params:
+      WAYLAND: 0
+  when: dunst_exists.rc != 0
+  tags:
+    - install
+    - dunst
+
+- name: Install dunst
+  become: true
+  make:
+    chdir: /tmp/dunst
+    target: install
+    params:
+      WAYLAND: 0
+  when: dunst_exists.rc != 0
+  tags:
+    - install
+    - dunst
+
+- name: Clean up build
+  become: true
+  file:
+    state: absent
+    path: /tmp/dunst
+  when: dunst_exists.rc != 0
+  tags:
+    - install
+    - dunst
+
+- name: Clean up apt
+  become: true
+  apt:
+    autoremove: true
+    update_cache: true
+  tags:
+    - install
+    - dunst
