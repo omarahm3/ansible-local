@@ -11,16 +11,16 @@
 
 - name: Download source
   unarchive:
-      url: 'https://github.com/tmux/tmux/releases/download/{{ DEFAULT_TMUX_VERSION }}/tmux-{{ DEFAULT_TMUX_VERSION }}.tar.gz'
-      dest: '/tmp/tmux'
-      remote_src: true
+    url: 'https://github.com/tmux/tmux/releases/download/{{ DEFAULT_TMUX_VERSION }}/tmux-{{ DEFAULT_TMUX_VERSION }}.tar.gz'
+    dest: '/tmp/tmux'
+    remote_src: true
   tags:
     - install
     - tmux
 
 - name: Prepare tmux build
   shell:
-      cmd: 'cd /tmp/tmux/ && ./configure && make'
+    cmd: 'cd /tmp/tmux/ && ./configure && make'
   tags:
     - install
     - tmux
@@ -28,8 +28,8 @@
 - name: Install build
   become: true
   make:
-      chdir: /tmp/tmux/
-      target: install
+    chdir: /tmp/tmux/
+    target: install
   tags:
     - install
     - tmux
@@ -38,3 +38,25 @@
   become: true
   shell:
     cmd: 'rm -rf /usr/local/src/tmux-\* && mv /tmp/tmux /usr/local/src'
+  tags:
+    - install
+    - tmux
+
+- name: Check if TPM exists
+  stat:
+    path: /home/{{ USER }}/.tmux/plugins/tpm
+  register: tpm_data
+  tags:
+    - install
+    - tmux
+
+- name: Install TPM
+  git:
+    repo: 'https://github.com/tmux-plugins/tpm'
+    clone: true
+    recursive: true
+    dest: '/home/{{ USER }}/.tmux/plugins/tpm'
+  when: not tpm_data.stat.exists
+  tags:
+    - install
+    - tmux
