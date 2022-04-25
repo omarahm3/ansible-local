@@ -67,8 +67,25 @@
     - core
 
 - name: Install kitty
+  become: true
   shell:
-    cmd: curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    cmd: curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh -s -- launch=n installer=nightly
+  tags:
+    - install
+    - core
+    - kitty
+
+- name: Add kitty to Path
+  shell:
+    cmd: 'ln -s ~/.local/kitty.app/bin/kitty ~/.local/bin/'
+  tags:
+    - install
+    - core
+    - kitty
+
+- name: Add kitty desktop file
+  shell:
+    cmd: 'cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications && sed -i "s|Icon=kitty|Icon=/home/$USER/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty.desktop'
   tags:
     - install
     - core
