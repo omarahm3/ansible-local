@@ -1,3 +1,9 @@
+- name: Remove current package
+  apt:
+    pkg: tmux
+    state: absent
+  become: true
+
 - name: Install dependencies
   become: true
   apt:
@@ -11,16 +17,17 @@
 
 - name: Download source
   unarchive:
-    url: 'https://github.com/tmux/tmux/releases/download/{{ DEFAULT_TMUX_VERSION }}/tmux-{{ DEFAULT_TMUX_VERSION }}.tar.gz'
-    dest: '/tmp/tmux'
+    src: 'https://github.com/tmux/tmux/releases/download/{{ DEFAULT_TMUX_VERSION }}/tmux-{{ DEFAULT_TMUX_VERSION }}.tar.gz'
     remote_src: true
+    dest: '/tmp'
   tags:
     - install
     - tmux
 
 - name: Prepare tmux build
   shell:
-    cmd: 'cd /tmp/tmux/ && ./configure && make'
+    cmd: './configure && make'
+    chdir: /tmp/tmux-{{ DEFAULT_TMUX_VERSION }}
   tags:
     - install
     - tmux
@@ -28,7 +35,7 @@
 - name: Install build
   become: true
   make:
-    chdir: /tmp/tmux/
+    chdir: /tmp/tmux-{{ DEFAULT_TMUX_VERSION }}
     target: install
   tags:
     - install
@@ -37,7 +44,8 @@
 - name: Move files
   become: true
   shell:
-    cmd: 'rm -rf /usr/local/src/tmux-\* && mv /tmp/tmux /usr/local/src'
+    cmd: 'sudo rm -rf /usr/local/src/tmux-* && mv /tmp/tmux-{{ DEFAULT_TMUX_VERSION }} /usr/local/src'
+    warn: false
   tags:
     - install
     - tmux
