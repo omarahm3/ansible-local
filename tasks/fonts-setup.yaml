@@ -25,12 +25,19 @@
   loop_control:
     loop_var: font
 
+- name: Install material icons regular
+  get_url:
+    url: "https://github.com/google/material-design-icons/raw/master/font/MaterialIcons-Regular.ttf"
+    dest: "/home/{{ USER }}/.local/share/fonts/MaterialIcons-Regular.ttf"
+  tags:
+    - install
+    - fonts
+
 - name: Install material icons fonts
   get_url:
-    url: "https://github.com/google/material-design-icons/blob/master/font/{{ item }}-Regular.ttf?raw=true"
-    dest: "/home/{{ USER }}/.local/share/fonts/{{ item }}-Regular.ttf"
+    url: "https://github.com/google/material-design-icons/raw/master/font/{{ item }}-Regular.otf"
+    dest: "/home/{{ USER }}/.local/share/fonts/{{ item }}-Regular.otf"
   with_items:
-    - MaterialIcons
     - MaterialIconsOutlined
     - MaterialIconsRound
     - MaterialIconsSharp
