@@ -1,17 +1,15 @@
-- name: Add neovim repository
+- name: Download neovim binary
   become: true
-  apt_repository:
-    repo: ppa:neovim-ppa/stable
-    update_cache: true
+  get_url:
+      url: 'https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage'
+      dest: '/usr/local/bin/nvim'
   tags:
-    - install
+    - download
     - neovim
 
-- name: Install neovim
+- name: Make neovim executable
   become: true
-  apt:
-    name: ['neovim']
-    update_cache: true
+  shell: chmod +x /usr/local/bin/nvim
   tags:
     - install
     - neovim
