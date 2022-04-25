@@ -36,7 +36,6 @@
       - 'php{{ DEFAULT_PHP_VERSION }}-fpm'
       - 'php{{ DEFAULT_PHP_VERSION }}-dom'
       - 'php{{ DEFAULT_PHP_VERSION }}-mongodb'
-      - php8.0
   tags:
     - install
     - languages
