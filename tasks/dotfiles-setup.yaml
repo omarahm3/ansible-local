@@ -20,6 +20,9 @@
     - dotfiles
   when: dotfiles.stat.exists == False
 
+- name: Run private hook
+  script: ../private/hooks/pre-stow.sh
+
 - name: Run stow
   shell:
     cmd: stow -vSt ~ *
