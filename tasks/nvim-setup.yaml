@@ -1,15 +1,26 @@
-- name: Download neovim binary
-  become: true
-  get_url:
-      url: 'https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage'
-      dest: '/usr/local/bin/nvim'
+- name: Remove neovim
+  shell: rm -rf ~/neovim
   tags:
-    - download
+    - install
     - neovim
 
-- name: Make neovim executable
+- name: Clone Neovim
+  git:
+    repo: 'https://github.com/neovim/neovim.git'
+    dest: "{{ lookup('env', 'HOME') }}/neovim"
+  tags:
+    - install
+    - neovim
+
+- name: Build neovim
+  shell: "cd {{ lookup('env', 'HOME') }}/neovim && make CMAKE_BUILD_TYPE=Release -j 20"
+  tags:
+    - install
+    - neovim
+
+- name: Install neovim
   become: true
-  shell: chmod +x /usr/local/bin/nvim
+  shell: "cd {{ lookup('env', 'HOME') }}/neovim && make CMAKE_BUILD_TYPE=Release install"
   tags:
     - install
     - neovim
