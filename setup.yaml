@@ -31,7 +31,6 @@
           NodeJs version: {{ NODE_VERSION }}
           NerdFonts version: {{ NERD_FONTS_VERSION }}
           PHP version: {{ DEFAULT_PHP_VERSION }}
-      
   tasks:
     - include_tasks: tasks/ssh-setup.yaml
     - include_tasks: tasks/core-setup.yaml
@@ -41,6 +40,9 @@
     - include_tasks: tasks/rofi-setup.yaml
     - include_tasks: tasks/tmux-setup.yaml
     - include_tasks: tasks/nvim-setup.yaml
+      tags:
+        - install
+        - neovim
     - include_tasks: tasks/shell-setup.yaml
     - include_tasks: tasks/node-setup.yaml
     - include_tasks: tasks/applications-setup.yaml
