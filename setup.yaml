@@ -11,12 +11,9 @@
     GIT_NAME: "John Doe"
     GIT_EMAIL: "john@example.com"
   pre_tasks:
-    - name: Update Apt
+    - name: Update software
       become: true
-      apt:
-        autoclean: true
-        autoremove: true
-        force_apt_get: true
+      pacman:
         update_cache: true
         state: latest
       tags:
