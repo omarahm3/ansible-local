@@ -71,6 +71,7 @@
         - install
         - terminal
         - st
+        - kitty
     - include_tasks: tasks/nvim-setup.yaml
       tags:
         - install
