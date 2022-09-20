@@ -3,7 +3,6 @@
     SOURCE_KEY: "./private/.ssh/ansible"
     DEST_KEY: "{{ lookup('env', 'HOME') }}/.ssh/ansible"
     USER: "{{ lookup('env', 'USER') or 'custom_user' }}"
-    RELEASE_NAME: "focal"
     NERD_FONTS_VERSION: "v2.1.0"
     DEFAULT_ROFI_VERSION: "1.7.5"
     DEFAULT_TMUX_VERSION: "3.3a"
@@ -24,7 +23,6 @@
         msg: |
           Source key: {{ SOURCE_KEY }}
           Destination key: {{ DEST_KEY }}
-          Release name: {{ RELEASE_NAME }}
           USER: {{ USER }}
           GIT Name: {{ GIT_NAME }}
           GIT Email: {{ GIT_EMAIL }}
