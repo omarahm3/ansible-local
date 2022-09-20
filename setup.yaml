@@ -2,7 +2,6 @@
   vars:
     SOURCE_KEY: "./private/.ssh/ansible"
     DEST_KEY: "{{ lookup('env', 'HOME') }}/.ssh/ansible"
-    NODE_VERSION: "14"
     USER: "{{ lookup('env', 'USER') or 'custom_user' }}"
     RELEASE_NAME: "focal"
     NERD_FONTS_VERSION: "v2.1.0"
@@ -36,12 +35,20 @@
       tags:
         - install
         - ssh
+    # TODO install all needed packages for arch too
     - include_tasks: tasks/core-setup.yaml
       tags:
         - install
         - ubuntu
         - core
     - include_tasks: tasks/languages-setup.yaml
+      tags:
+        - install
+        - languages
+        - go
+        - php
+        - rust
+        - node
     - include_tasks: tasks/polybar-setup.yaml
     - include_tasks: tasks/dunst-setup.yaml
     - include_tasks: tasks/rofi-setup.yaml
@@ -56,7 +63,6 @@
         - install
         - neovim
     - include_tasks: tasks/shell-setup.yaml
-    - include_tasks: tasks/node-setup.yaml
     - include_tasks: tasks/applications-setup.yaml
     - include_tasks: tasks/docker-setup.yaml
     - include_tasks: tasks/dotfiles-setup.yaml

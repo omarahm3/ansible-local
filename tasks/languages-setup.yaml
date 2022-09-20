@@ -1,45 +1,23 @@
-- name: Install languages
+- name: Install php
   become: true
-  apt:
+  pacman:
     name:
-      - lua5.1
-      - golang
-      - python3-dev
-      - python3-pip
-      - python3-setuptools
-  tags:
-    - install
-    - languages
-
-- name: Add PHP repo
-  become: true
-  apt_repository:
-    repo: ppa:ondrej/php
-    update_cache: true
+      - php
   tags:
     - install
     - languages
     - php
 
-- name: Install PHP and its modules
+- name: Install go
   become: true
-  apt:
+  pacman:
     name:
-      - 'php{{ DEFAULT_PHP_VERSION }}'
-      - 'php{{ DEFAULT_PHP_VERSION }}-mysql'
-      - 'php{{ DEFAULT_PHP_VERSION }}-curl'
-      - 'php{{ DEFAULT_PHP_VERSION }}-cli'
-      - 'php{{ DEFAULT_PHP_VERSION }}-bcmath'
-      - 'php{{ DEFAULT_PHP_VERSION }}-json'
-      - 'php{{ DEFAULT_PHP_VERSION }}-mbstring'
-      - 'php{{ DEFAULT_PHP_VERSION }}-gd'
-      - 'php{{ DEFAULT_PHP_VERSION }}-fpm'
-      - 'php{{ DEFAULT_PHP_VERSION }}-dom'
-      - 'php{{ DEFAULT_PHP_VERSION }}-mongodb'
+      - go
+      - go-tools
   tags:
     - install
     - languages
-    - php
+    - go
 
 - name: Install rust
   shell:
@@ -55,3 +33,19 @@
     - install
     - languages
     - rust
+
+- name: Install n
+  shell:
+    cmd: curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n
+  tags:
+    - install
+    - languages
+    - node
+
+- name: Install nodejs
+  shell:
+    cmd: /usr/local/bin/n lts
+  tags:
+    - install
+    - languages
+    - node
