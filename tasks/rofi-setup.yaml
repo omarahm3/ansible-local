@@ -1,40 +1,6 @@
-- name: Install build dependencies
-  become: true
-  apt:
-    name:
-      - automake
-      - autoconf
-      - flex
-      - bison
-      - libpango1.0-dev
-      - libglib2.0-dev
-      - libgdk-pixbuf2.0-dev
-      - libstartup-notification0-dev
-      - libxkbcommon-dev
-      - libxkbcommon-x11-0
-      - libxcb-xinerama0-dev
-      - meson
-      - libsystemd-dev
-      - ninja-build
-      - libdbus-1-dev
-      - libinih-dev
-      - libxcb-util-dev
-      - libxcb-xkb-dev
-      - libxcb-cursor-dev
-      - libxkbcommon-x11-dev
-      - libxcb-icccm4-dev
-      - libxcb-randr0-dev
-      - libxcb1-dev
-      - check
-      - libxcb-ewmh-dev
-    update_cache: true
-  tags:
-    - install
-    - rofi
-
 - name: Get rofi
   unarchive:
-    src: "https://github.com/davatorium/rofi/releases/download/1.7.2/rofi-1.7.2.tar.gz"
+    src: "https://github.com/davatorium/rofi/releases/download/{{ DEFAULT_ROFI_VERSION }}/rofi-{{ DEFAULT_ROFI_VERSION }}.tar.gz"
     remote_src: true
     dest: "/tmp/"
   tags:
@@ -44,7 +10,7 @@
 - name: Build and install rofi
   become: true
   shell:
-    chdir: /tmp/rofi-1.7.2
+    chdir: "/tmp/rofi-{{ DEFAULT_ROFI_VERSION }}"
     cmd: meson setup build --prefix="/usr/bin" && ninja -C build && ninja -C build install
   tags:
     - install
@@ -53,7 +19,7 @@
 - name: Copy rofi executable to bin
   become: true
   copy:
-    src: "/tmp/rofi-1.7.2/build/rofi"
+    src: "/tmp/rofi-{{ DEFAULT_ROFI_VERSION }}/build/rofi"
     dest: "/usr/bin/rofi"
     force: true
     mode: preserve
@@ -65,16 +31,7 @@
   become: true
   file:
     state: absent
-    path: /tmp/rofi-1.7.2
-  tags:
-    - install
-    - rofi
-
-- name: Clean up apt
-  become: true
-  apt:
-    autoremove: true
-    update_cache: true
+    path: "/tmp/rofi-{{ DEFAULT_ROFI_VERSION }}"
   tags:
     - install
     - rofi

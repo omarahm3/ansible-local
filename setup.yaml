@@ -5,7 +5,7 @@
     USER: "{{ lookup('env', 'USER') or 'custom_user' }}"
     RELEASE_NAME: "focal"
     NERD_FONTS_VERSION: "v2.1.0"
-    DEFAULT_PHP_VERSION: "7.4"
+    DEFAULT_ROFI_VERSION: "1.7.5"
     DEFAULT_TMUX_VERSION: "3.3-rc"
     GIT_NAME: "John Doe"
     GIT_EMAIL: "john@example.com"
@@ -28,7 +28,9 @@
           GIT Name: {{ GIT_NAME }}
           GIT Email: {{ GIT_EMAIL }}
           NerdFonts version: {{ NERD_FONTS_VERSION }}
-          PHP version: {{ DEFAULT_PHP_VERSION }}
+          Rofi version: {{ DEFAULT_ROFI_VERSION }}
+          Tmux version: {{ DEFAULT_TMUX_VERSION }}
+            
   tasks:
     - include_tasks: tasks/ssh-setup.yaml
       tags:
@@ -57,6 +59,9 @@
         - install
         - dunst
     - include_tasks: tasks/rofi-setup.yaml
+      tags:
+        - install
+        - rofi
     - include_tasks: tasks/tmux-setup.yaml
     - include_tasks: ./tasks/terminal-setup.yaml
       tags:
