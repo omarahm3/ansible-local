@@ -7,6 +7,7 @@
     NERD_FONTS_VERSION: "v2.1.0"
     DEFAULT_ROFI_VERSION: "1.7.5"
     DEFAULT_TMUX_VERSION: "3.3a"
+    DEFAULT_DOCKER_COMPOSE_VERSION: "v2.11.0"
     GIT_NAME: "John Doe"
     GIT_EMAIL: "john@example.com"
   pre_tasks:
@@ -94,6 +95,10 @@
         - insomnia
         - lens
     - include_tasks: tasks/docker-setup.yaml
+      tags:
+        - install
+        - docker
+        - docker-compose
     - include_tasks: tasks/dotfiles-setup.yaml
     - include_tasks: private/setup.yaml
     - include_tasks: tasks/snap-setup.yaml
