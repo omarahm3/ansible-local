@@ -37,7 +37,6 @@
       tags:
         - install
         - ssh
-    # TODO install all needed packages for arch too
     - include_tasks: ./tasks/core-setup.yaml
       tags:
         - install
@@ -95,6 +94,7 @@
         - insomnia
         - lens
         - telegram
+        - steam
     - include_tasks: ./tasks/docker-setup.yaml
       tags:
         - install

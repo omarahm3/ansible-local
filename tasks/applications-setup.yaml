@@ -49,13 +49,13 @@
     - applications
     - insomnia
 
-- name: Install telegram-desktop
+- name: Install steam
   become: true
-  yay:
-    name: telegram-desktop
+  pacman:
+    name: steam
     state: latest
     update_cache: yes
   tags:
     - install
     - applications
-    - telegram
+    - steam
