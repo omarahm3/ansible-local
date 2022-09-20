@@ -2,12 +2,12 @@
   vars:
     SOURCE_KEY: "./private/.ssh/ansible"
     DEST_KEY: "{{ lookup('env', 'HOME') }}/.ssh/ansible"
-    NODE_VERSION: "14"
     USER: "{{ lookup('env', 'USER') or 'custom_user' }}"
     RELEASE_NAME: "focal"
     NERD_FONTS_VERSION: "v2.1.0"
-    DEFAULT_PHP_VERSION: "7.4"
-    DEFAULT_TMUX_VERSION: "3.3-rc"
+    DEFAULT_ROFI_VERSION: "1.7.5"
+    DEFAULT_TMUX_VERSION: "3.3a"
+    DEFAULT_DOCKER_COMPOSE_VERSION: "v2.11.0"
     GIT_NAME: "John Doe"
     GIT_EMAIL: "john@example.com"
   pre_tasks:
@@ -28,41 +28,92 @@
           USER: {{ USER }}
           GIT Name: {{ GIT_NAME }}
           GIT Email: {{ GIT_EMAIL }}
-          NodeJs version: {{ NODE_VERSION }}
           NerdFonts version: {{ NERD_FONTS_VERSION }}
-          PHP version: {{ DEFAULT_PHP_VERSION }}
+          Rofi version: {{ DEFAULT_ROFI_VERSION }}
+          Tmux version: {{ DEFAULT_TMUX_VERSION }}
+            
   tasks:
-    - include_tasks: tasks/ssh-setup.yaml
+    - include_tasks: ./tasks/ssh-setup.yaml
       tags:
         - install
         - ssh
-    - include_tasks: tasks/core-setup.yaml
+    - include_tasks: ./tasks/core-setup.yaml
       tags:
         - install
         - ubuntu
         - core
-    - include_tasks: tasks/languages-setup.yaml
-    - include_tasks: tasks/polybar-setup.yaml
-    - include_tasks: tasks/dunst-setup.yaml
-    - include_tasks: tasks/rofi-setup.yaml
-    - include_tasks: tasks/tmux-setup.yaml
+    - include_tasks: ./tasks/languages-setup.yaml
+      tags:
+        - install
+        - languages
+        - go
+        - php
+        - rust
+        - node
+    - include_tasks: ./tasks/polybar-setup.yaml
+      tags:
+        - install
+        - polybar
+    - include_tasks: ./tasks/dunst-setup.yaml
+      tags:
+        - install
+        - dunst
+    - include_tasks: ./tasks/rofi-setup.yaml
+      tags:
+        - install
+        - rofi
+    - include_tasks: ./tasks/tmux-setup.yaml
+      tags:
+        - install
+        - tmux
     - include_tasks: ./tasks/terminal-setup.yaml
       tags:
         - install
         - terminal
         - st
-    - include_tasks: tasks/nvim-setup.yaml
+        - kitty
+    - include_tasks: ./tasks/nvim-setup.yaml
       tags:
         - install
         - neovim
-    - include_tasks: tasks/shell-setup.yaml
-    - include_tasks: tasks/node-setup.yaml
-    - include_tasks: tasks/applications-setup.yaml
-    - include_tasks: tasks/docker-setup.yaml
-    - include_tasks: tasks/dotfiles-setup.yaml
-    - include_tasks: private/setup.yaml
-    - include_tasks: tasks/snap-setup.yaml
-    - include_tasks: tasks/fonts-setup.yaml
+    - include_tasks: ./tasks/shell-setup.yaml
+      tags:
+        - install
+        - shell
+        - fish
+        - omf
+        - fisher
+        - starship
+    - include_tasks: ./tasks/applications-setup.yaml
+      tags:
+        - install
+        - applications
+        - baapan
+        - bitwarden
+        - notion
+        - insomnia
+        - lens
+        - telegram
+        - steam
+    - include_tasks: ./tasks/docker-setup.yaml
+      tags:
+        - install
+        - docker
+        - docker-compose
+    - include_tasks: ./tasks/dotfiles-setup.yaml
+      tags:
+        - install
+        - dotfiles
+    # - include_tasks: private/setup.yaml
+    - include_tasks: ./tasks/tools-setup.yaml
+      tags:
+        - install
+        - tools
+        - jq
+        - authy
+        - flameshot
+        - bat
+    - include_tasks: ./tasks/fonts-setup.yaml
       tags:
         - install
         - fonts

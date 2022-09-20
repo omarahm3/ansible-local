@@ -1,27 +1,8 @@
-- name: Add docker GPG apt key
+- name: Install docker
   become: true
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-  tags:
-    - install
-    - docker
-
-- name: Add docker repository
-  become: true
-  apt_repository:
-    repo: "deb https://download.docker.com/linux/ubuntu {{ RELEASE_NAME }} stable"
+  pacman:
+    name: docker
     update_cache: true
-    state: present
-  tags:
-    - install
-    - docker
-
-- name: Install docker-ce
-  become: true
-  apt:
-    update_cache: true
-    name: docker-ce
     state: latest
   tags:
     - install
@@ -40,9 +21,10 @@
 
 - name: Install docker-compose
   get_url:
-    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+    url: "https://github.com/docker/compose/releases/download/{{ DEFAULT_DOCKER_COMPOSE_VERSION }}/docker-compose-Linux-x86_64"
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
   tags:
     - install
     - docker
+    - docker-compose

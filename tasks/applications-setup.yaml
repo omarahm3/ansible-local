@@ -1,108 +1,61 @@
 - name: Install baapan
-  shell: npm i -g baapan
+  shell: yarn global add baapan
   become: true
   become_user: "{{ USER }}"
   tags:
     - install
     - applications
-    - npm
     - baapan
 
 - name: Install bitwarden cli
-  shell: npm install -g @bitwarden/cli
+  shell: yarn global add @bitwarden/cli
   become: true
   become_user: "{{ USER }}"
   tags:
     - install
     - applications
-    - npm
-    - bitwarden-cli
+    - bitwarden
 
-- name: Download github-desktop GPG certificate
+- name: Install notion-enhanced
   become: true
-  get_url:
-      url: 'https://mirror.mwt.me/ghd/gpgkey'
-      dest: '/etc/apt/trusted.gpg.d/shiftkey-desktop.asc'
-  tags:
-    - download
-    - package
-    - applications
-    - github-desktop
-    - certificate
-
-- name: Add github-desktop repository
-  become: true
-  apt_repository:
-    repo: "deb [arch=amd64] https://mirror.mwt.me/ghd/deb/ any main"
-    update_cache: true
-    state: present
-  tags:
-    - install
-    - repository
-    - applications
-    - github-desktop
-
-- name: Add notion-enhancer repository
-  become: true
-  apt_repository:
-    repo: "deb [trusted=yes] https://apt.fury.io/notion-repackaged/ /"
-    update_cache: true
-    state: present
-  tags:
-    - install
-    - repository
-    - applications
-    - notion-enhanced
-
-- name: Install applications
-  become: true
-  apt:
-    name:
-      - github-desktop
-      - notion-app-enhanced
-    update_cache: true
+  yay:
+    name: notion-app-enhanced
+    state: latest
+    update_cache: yes
   tags:
     - install
     - applications
-    - github-desktop
-    - notion-enhanced
-
-- name: Download k8s lens debian package
-  get_url:
-      url: 'https://api.k8slens.dev/binaries/Lens-5.4.6-latest.20220421.1.amd64.deb'
-      dest: '/tmp/lens.deb'
-  tags:
-    - download
-    - package
-    - applications
-    - k8s-lens
+    - notion
 
 - name: Install k8s lens
   become: true
-  apt:
-      deb: '/tmp/lens.deb'
+  yay:
+    name: lens
+    state: latest
+    update_cache: yes
   tags:
     - install
-    - package
     - applications
-    - k8s-lens
-
-- name: Download insomnia debian package
-  get_url:
-      url: 'https://updates.insomnia.rest/downloads/ubuntu/latest?&app=com.insomnia.app&source=website'
-      dest: '/tmp/insomnia.deb'
-  tags:
-    - download
-    - package
-    - applications
-    - insomnia
+    - lens
 
 - name: Install insomnia
   become: true
-  apt:
-      deb: '/tmp/insomnia.deb'
+  yay:
+    name: insomnia
+    state: latest
+    update_cache: yes
   tags:
     - install
-    - package
     - applications
     - insomnia
+
+- name: Install steam
+  become: true
+  pacman:
+    name: steam
+    state: latest
+    update_cache: yes
+  tags:
+    - install
+    - applications
+    - steam

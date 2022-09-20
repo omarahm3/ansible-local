@@ -14,3 +14,14 @@
     - install
     - terminal
     - st
+
+- name: Install kitty
+  become: true
+  yay:
+    name: kitty
+    state: latest
+    update_cache: yes
+  tags:
+    - install
+    - terminal
+    - kitty
