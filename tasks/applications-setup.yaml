@@ -48,3 +48,14 @@
     - install
     - applications
     - insomnia
+
+- name: Install telegram-desktop
+  become: true
+  yay:
+    name: telegram-desktop
+    state: latest
+    update_cache: yes
+  tags:
+    - install
+    - applications
+    - telegram

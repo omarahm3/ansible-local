@@ -1,0 +1,54 @@
+- name: Install jq
+  become: true
+  yay:
+    name: jq
+    state: latest
+    update_cache: yes
+  tags:
+    - install
+    - tools
+    - jq
+
+- name: Install authy
+  become: true
+  yay:
+    name: authy
+    state: latest
+    update_cache: yes
+  tags:
+    - install
+    - tools
+    - authy
+
+- name: Install authy
+  become: true
+  yay:
+    name: authy
+    state: latest
+    update_cache: yes
+  tags:
+    - install
+    - tools
+    - authy
+
+- name: Install flameshot
+  become: true
+  yay:
+    name: flameshot
+    state: latest
+    update_cache: yes
+  tags:
+    - install
+    - tools
+    - flameshot
+
+- name: Install bat
+  become: true
+  yay:
+    name: bat
+    state: latest
+    update_cache: yes
+  tags:
+    - install
+    - tools
+    - bat

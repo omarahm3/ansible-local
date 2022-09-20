@@ -33,17 +33,17 @@
           Tmux version: {{ DEFAULT_TMUX_VERSION }}
             
   tasks:
-    - include_tasks: tasks/ssh-setup.yaml
+    - include_tasks: ./tasks/ssh-setup.yaml
       tags:
         - install
         - ssh
     # TODO install all needed packages for arch too
-    - include_tasks: tasks/core-setup.yaml
+    - include_tasks: ./tasks/core-setup.yaml
       tags:
         - install
         - ubuntu
         - core
-    - include_tasks: tasks/languages-setup.yaml
+    - include_tasks: ./tasks/languages-setup.yaml
       tags:
         - install
         - languages
@@ -51,19 +51,19 @@
         - php
         - rust
         - node
-    - include_tasks: tasks/polybar-setup.yaml
+    - include_tasks: ./tasks/polybar-setup.yaml
       tags:
         - install
         - polybar
-    - include_tasks: tasks/dunst-setup.yaml
+    - include_tasks: ./tasks/dunst-setup.yaml
       tags:
         - install
         - dunst
-    - include_tasks: tasks/rofi-setup.yaml
+    - include_tasks: ./tasks/rofi-setup.yaml
       tags:
         - install
         - rofi
-    - include_tasks: tasks/tmux-setup.yaml
+    - include_tasks: ./tasks/tmux-setup.yaml
       tags:
         - install
         - tmux
@@ -73,11 +73,11 @@
         - terminal
         - st
         - kitty
-    - include_tasks: tasks/nvim-setup.yaml
+    - include_tasks: ./tasks/nvim-setup.yaml
       tags:
         - install
         - neovim
-    - include_tasks: tasks/shell-setup.yaml
+    - include_tasks: ./tasks/shell-setup.yaml
       tags:
         - install
         - shell
@@ -85,7 +85,7 @@
         - omf
         - fisher
         - starship
-    - include_tasks: tasks/applications-setup.yaml
+    - include_tasks: ./tasks/applications-setup.yaml
       tags:
         - install
         - applications
@@ -94,15 +94,26 @@
         - notion
         - insomnia
         - lens
-    - include_tasks: tasks/docker-setup.yaml
+        - telegram
+    - include_tasks: ./tasks/docker-setup.yaml
       tags:
         - install
         - docker
         - docker-compose
-    - include_tasks: tasks/dotfiles-setup.yaml
-    - include_tasks: private/setup.yaml
-    - include_tasks: tasks/snap-setup.yaml
-    - include_tasks: tasks/fonts-setup.yaml
+    - include_tasks: ./tasks/dotfiles-setup.yaml
+      tags:
+        - install
+        - dotfiles
+    # - include_tasks: private/setup.yaml
+    - include_tasks: ./tasks/tools-setup.yaml
+      tags:
+        - install
+        - tools
+        - jq
+        - authy
+        - flameshot
+        - bat
+    - include_tasks: ./tasks/fonts-setup.yaml
       tags:
         - install
         - fonts
