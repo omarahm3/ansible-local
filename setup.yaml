@@ -53,6 +53,9 @@
         - install
         - polybar
     - include_tasks: tasks/dunst-setup.yaml
+      tags:
+        - install
+        - dunst
     - include_tasks: tasks/rofi-setup.yaml
     - include_tasks: tasks/tmux-setup.yaml
     - include_tasks: ./tasks/terminal-setup.yaml
