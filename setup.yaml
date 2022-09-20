@@ -33,7 +33,14 @@
           PHP version: {{ DEFAULT_PHP_VERSION }}
   tasks:
     - include_tasks: tasks/ssh-setup.yaml
+      tags:
+        - install
+        - ssh
     - include_tasks: tasks/core-setup.yaml
+      tags:
+        - install
+        - ubuntu
+        - core
     - include_tasks: tasks/languages-setup.yaml
     - include_tasks: tasks/polybar-setup.yaml
     - include_tasks: tasks/dunst-setup.yaml
@@ -56,3 +63,6 @@
     - include_tasks: private/setup.yaml
     - include_tasks: tasks/snap-setup.yaml
     - include_tasks: tasks/fonts-setup.yaml
+      tags:
+        - install
+        - fonts
