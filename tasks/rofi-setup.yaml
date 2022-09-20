@@ -1,37 +1,20 @@
-- name: Get rofi
-  unarchive:
-    src: "https://github.com/davatorium/rofi/releases/download/{{ DEFAULT_ROFI_VERSION }}/rofi-{{ DEFAULT_ROFI_VERSION }}.tar.gz"
-    remote_src: true
-    dest: "/tmp/"
+- name: Install rofi
+  become: true
+  yay:
+    name: rofi
+    state: latest
+    update_cache: yes
   tags:
     - install
     - rofi
 
-- name: Build and install rofi
+- name: Install rofi-calc
   become: true
-  shell:
-    chdir: "/tmp/rofi-{{ DEFAULT_ROFI_VERSION }}"
-    cmd: meson setup build --prefix="/usr/bin" && ninja -C build && ninja -C build install
+  yay:
+    name: rofi-calc
+    state: latest
+    update_cache: yes
   tags:
     - install
     - rofi
-
-- name: Copy rofi executable to bin
-  become: true
-  copy:
-    src: "/tmp/rofi-{{ DEFAULT_ROFI_VERSION }}/build/rofi"
-    dest: "/usr/bin/rofi"
-    force: true
-    mode: preserve
-  tags:
-    - install
-    - rofi
-
-- name: Clean up build
-  become: true
-  file:
-    state: absent
-    path: "/tmp/rofi-{{ DEFAULT_ROFI_VERSION }}"
-  tags:
-    - install
-    - rofi
+    - rofi-calc
