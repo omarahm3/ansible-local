@@ -1,0 +1,16 @@
+- name: Clone st
+  git:
+    repo: 'https://github.com/LukeSmithxyz/st'
+    dest: "{{ lookup('env', 'HOME') }}/.st"
+  tags:
+    - install
+    - terminal
+    - st
+
+- name: Build and install st
+  shell: "cd {{ lookup('env', 'HOME') }}/.st && make install clean"
+  become: true
+  tags:
+    - install
+    - terminal
+    - st

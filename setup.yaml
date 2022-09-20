@@ -39,6 +39,11 @@
     - include_tasks: tasks/dunst-setup.yaml
     - include_tasks: tasks/rofi-setup.yaml
     - include_tasks: tasks/tmux-setup.yaml
+    - include_tasks: ./tasks/terminal-setup.yaml
+      tags:
+        - install
+        - terminal
+        - st
     - include_tasks: tasks/nvim-setup.yaml
       tags:
         - install
