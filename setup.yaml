@@ -27,7 +27,6 @@
           USER: {{ USER }}
           GIT Name: {{ GIT_NAME }}
           GIT Email: {{ GIT_EMAIL }}
-          NodeJs version: {{ NODE_VERSION }}
           NerdFonts version: {{ NERD_FONTS_VERSION }}
           PHP version: {{ DEFAULT_PHP_VERSION }}
   tasks:
@@ -50,6 +49,9 @@
         - rust
         - node
     - include_tasks: tasks/polybar-setup.yaml
+      tags:
+        - install
+        - polybar
     - include_tasks: tasks/dunst-setup.yaml
     - include_tasks: tasks/rofi-setup.yaml
     - include_tasks: tasks/tmux-setup.yaml
