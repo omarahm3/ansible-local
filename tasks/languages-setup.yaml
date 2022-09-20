@@ -49,3 +49,12 @@
     - install
     - languages
     - node
+
+- name: Install yarn
+  shell:
+    cmd: /usr/local/bin/npm i -g yarn
+  tags:
+    - install
+    - languages
+    - node
+    - yarn

@@ -77,7 +77,22 @@
         - install
         - neovim
     - include_tasks: tasks/shell-setup.yaml
+      tags:
+        - install
+        - shell
+        - fish
+        - omf
+        - fisher
+        - starship
     - include_tasks: tasks/applications-setup.yaml
+      tags:
+        - install
+        - applications
+        - baapan
+        - bitwarden
+        - notion
+        - insomnia
+        - lens
     - include_tasks: tasks/docker-setup.yaml
     - include_tasks: tasks/dotfiles-setup.yaml
     - include_tasks: private/setup.yaml

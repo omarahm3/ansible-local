@@ -1,29 +1,11 @@
-- name: Add fish 3 repository
+- name: Install fish
   become: true
-  apt_repository:
-    repo: ppa:fish-shell/release-3
-    update_cache: true
+  yay:
+    name: fish-git
+    state: latest
+    update_cache: yes
   tags:
     - install
-    - shell
-    - fish
-
-- name: Install fish and fish plugins
-  become: true
-  apt:
-    name: [ "fish" ]
-  tags:
-    - install
-    - shell
-    - fish
-
-- name: Install starship
-  shell: ". {{ lookup('env', 'HOME') }}/.cargo/env && cargo install starship"
-  args:
-    warn: false
-  tags:
-    - install
-    - starship
     - shell
     - fish
 
@@ -31,7 +13,11 @@
   stat:
     path: ~/.local/share/omf
   register: omf
-
+  tags:
+    - install
+    - fish
+    - shell
+    - omf
 
 - name: Install OMF
   become_user: "{{ USER }}"
@@ -47,6 +33,11 @@
   stat:
     path: "{{ lookup('env', 'HOME') }}/.config/fish/functions"
   register: fishfunctions
+  tags:
+    - install
+    - fish
+    - shell
+    - fisher
 
 - name: Create fish functions directory
   become: true
@@ -62,6 +53,7 @@
     - install
     - fish
     - shell
+    - fisher
 
 - name: Install fisher
   become_user: "{{ USER }}"
@@ -81,8 +73,7 @@
     - install
     - fish
     - shell
-    - omf-plugins
-    - bass
+    - omf
 
 - name: Check if fish ssh agent exists
   stat:
@@ -92,7 +83,7 @@
     - install
     - fish
     - shell
-    - fisher-plugins
+    - fisher
 
 - name: Install fisher plugins
   become_user: "{{ USER }}"
@@ -102,7 +93,7 @@
     - install
     - fish
     - shell
-    - fisher-plugins
+    - fisher
 
 - name: Set fish as default shell
   become: true
@@ -111,6 +102,15 @@
     shell: /usr/bin/fish
   tags:
     - install
-    - starship
     - shell
     - fish
+
+- name: Install starship
+  become: true
+  pacman:
+    name:
+      - starship
+  tags:
+    - install
+    - starship
+    - shell
