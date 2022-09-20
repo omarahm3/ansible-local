@@ -6,7 +6,7 @@
     RELEASE_NAME: "focal"
     NERD_FONTS_VERSION: "v2.1.0"
     DEFAULT_ROFI_VERSION: "1.7.5"
-    DEFAULT_TMUX_VERSION: "3.3-rc"
+    DEFAULT_TMUX_VERSION: "3.3a"
     GIT_NAME: "John Doe"
     GIT_EMAIL: "john@example.com"
   pre_tasks:
@@ -63,6 +63,9 @@
         - install
         - rofi
     - include_tasks: tasks/tmux-setup.yaml
+      tags:
+        - install
+        - tmux
     - include_tasks: ./tasks/terminal-setup.yaml
       tags:
         - install

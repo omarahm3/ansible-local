@@ -1,20 +1,3 @@
-- name: Remove current package
-  apt:
-    pkg: tmux
-    state: absent
-  become: true
-
-- name: Install dependencies
-  become: true
-  apt:
-    name:
-      - tar
-      - libevent-dev
-      - libncurses-dev
-  tags:
-    - install
-    - tmux
-
 - name: Download source
   unarchive:
     src: 'https://github.com/tmux/tmux/releases/download/{{ DEFAULT_TMUX_VERSION }}/tmux-{{ DEFAULT_TMUX_VERSION }}.tar.gz'
@@ -50,8 +33,9 @@
     - install
     - tmux
 
-- name: Check if TPM exists
-  stat:
+- name: Clean tpm
+  file:
+    state: absent
     path: /home/{{ USER }}/.tmux/plugins/tpm
   register: tpm_data
   tags:
@@ -64,7 +48,6 @@
     clone: true
     recursive: true
     dest: '/home/{{ USER }}/.tmux/plugins/tpm'
-  when: not tpm_data.stat.exists
   tags:
     - install
     - tmux
