@@ -34,9 +34,43 @@
     - languages
     - rust
 
+- name: Prepare n directory
+  become: true
+  file:
+    path: "/usr/local/n"
+    state: directory
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+    mode: 0755
+    recurse: true
+  tags:
+    - install
+    - languages
+    - node
+
+- name: Prepare n related directories
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+    recurse: true
+  loop:
+    - /usr/local/bin
+    - /usr/local/lib
+    - /usr/local/include
+    - /usr/local/share
+  tags:
+    - install
+    - languages
+    - node
+
 - name: Install n
-  shell:
-    cmd: curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n
+  get_url:
+    url: https://raw.githubusercontent.com/tj/n/master/bin/n
+    dest: "/usr/local/bin/n"
+    mode: "u+x,g+x"
   tags:
     - install
     - languages
@@ -58,3 +92,12 @@
     - languages
     - node
     - yarn
+
+- name: Install pnpm
+  shell:
+    cmd: /usr/local/bin/npm i -g pnpm
+  tags:
+    - install
+    - languages
+    - node
+    - pnpm
