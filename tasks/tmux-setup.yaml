@@ -28,7 +28,6 @@
   become: true
   shell:
     cmd: 'sudo rm -rf /usr/local/src/tmux-* && mv /tmp/tmux-{{ DEFAULT_TMUX_VERSION }} /usr/local/src'
-    warn: false
   tags:
     - install
     - tmux
